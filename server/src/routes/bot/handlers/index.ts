@@ -62,6 +62,11 @@ export const chatRequestHandler = async (
     temperature,
   );
 
+  const fasterModel = new ChatOpenAI({
+    modelName: "gpt-3.5-turbo",
+  });
+
+
   const chain = ConversationalRetrievalQAChain.fromLLM(
     model,
     vectorstore.asRetriever(),
@@ -69,6 +74,7 @@ export const chatRequestHandler = async (
       qaTemplate: bot.qaPrompt,
       questionGeneratorTemplate: bot.questionGeneratorPrompt,
       returnSourceDocuments: true,
+      questionGeneratorChainOptions: { llm: fasterModel,},
     },
   );
 
